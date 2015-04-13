@@ -39,8 +39,8 @@ int main(int argc, char* argv[])
 		for (lcv; lcv < argc - 1; lcv++)
 			cout << argv[lcv] << ' '; // Add a space
 
-		// ** Echo the last arg without a trailing space
-		cout << argv[lcv];		
+		// ** Echo the last arg with an end of line
+		cout << argv[lcv] << endl;
 
 		// ** Shortcut to reset the color
 		SetConsoleTextAttribute(hConsole, OriginalColors);		
