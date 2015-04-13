@@ -8,9 +8,6 @@
 #include "stdafx.h"
 #include <iostream>
 #include <string>
-#include <sstream>
-#include <wincon.h>
-#include <windows.h> // WinApi header
 
 using namespace std; // std::cout, std::cin
 
@@ -19,42 +16,34 @@ int main(int argc, char* argv[])
 	HANDLE hConsole;
 	int k;
 
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);		
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	const auto OriginalColors = 7;
 
 	if (argc <= 1) {
 		// ** Echo empty line if we have no arguments
 		cout << endl;
 	}
 	else if (argc == 2) {
-		// ** Echo just the message as it is
-		cout << argv[0];
-	}
-	else if (argc == 3) {		
-		// ** Assume we have a forground but no background character
-		int color = stoi(argv[1]);
-
-		SetConsoleTextAttribute(hConsole, color);
-				
-		cout << argv[2];
+		// ** No color specified.. Echo just the message as it is
+		cout << argv[1];
 	}
 	else {
 		// ** Assume we have a forground but no background character
 		int color = stoi(argv[1]);
-		
-		// ** Combine all remaining characters		
-		//stringstream ss;
-		//for (auto lcv = 2; lcv < argc; lcv++) {
-		//	ss << " " << argv[lcv];
-		//}
 
 		SetConsoleTextAttribute(hConsole, color);
-		
-		//system("color 0" + foregroundColor);
-		//cout << ss.str();
 
-		for (auto lcv = 2; lcv < argc; lcv++) {
-			cout << " " << argv[lcv];
-		}
+		// ** Echo all the test except the last one
+		auto lcv = 2;
+		for (lcv; lcv < argc - 1; lcv++)
+			cout << argv[lcv] << ' '; // Add a space
+
+		// ** Echo the last arg without a trailing space
+		cout << argv[lcv];		
+
+		// ** Shortcut to reset the color
+		SetConsoleTextAttribute(hConsole, OriginalColors);		
 	}
 
 	return 0;
